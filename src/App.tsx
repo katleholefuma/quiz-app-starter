@@ -5,8 +5,19 @@ import "./App.css";
 function App() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [score, setScore] = useState(0);
 
   const question = questions[currentQuestion];
+
+  const handleAnswerClick = (index: number) => {
+    if (selectedAnswer !== null) return;
+
+    setSelectedAnswer(index);
+
+    if (index === question.correctAnswer) {
+      setScore(score + 1);
+    }
+  };
 
   const nextQuestion = () => {
     if (
@@ -41,9 +52,15 @@ function App() {
 
         <h1>ACA Quiz App</h1>
 
-        <p className="progress">
-          Question {currentQuestion + 1} of {questions.length}
-        </p>
+        <div className="header">
+          <p className="progress">
+            Question {currentQuestion + 1} of {questions.length}
+          </p>
+
+          <p className="score">
+            Score: {score}
+          </p>
+        </div>
 
         <h2>{question.question}</h2>
 
@@ -52,11 +69,7 @@ function App() {
             <button
               key={index}
               className={getButtonClass(index)}
-              onClick={() => {
-                if (selectedAnswer === null) {
-                  setSelectedAnswer(index);
-                }
-              }}
+              onClick={() => handleAnswerClick(index)}
               disabled={selectedAnswer !== null}
             >
               {option}
@@ -66,21 +79,15 @@ function App() {
 
         {selectedAnswer !== null && (
           <div className="feedback">
-
             {selectedAnswer === question.correctAnswer ? (
-              <p className="correct-text">
-                Correct!
-              </p>
+              <p className="correct-text">✅ Correct!</p>
             ) : (
-              <p className="wrong-text">
-                Incorrect
-              </p>
+              <p className="wrong-text">❌ Incorrect</p>
             )}
 
             <p className="explanation">
               {question.explanation}
             </p>
-
           </div>
         )}
 
