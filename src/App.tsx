@@ -54,6 +54,7 @@ const handleAnswerClick = (index: number) => {
     setSelectedAnswer(null);
     setScore(0);
     setQuizFinished(false);
+    setAnswers(Array(questions.length).fill(null));
   };
 
   const getButtonClass = (index: number) => {
